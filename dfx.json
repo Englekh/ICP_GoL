@@ -1,0 +1,23 @@
+{
+  "canisters": {
+    "GoLNN": {
+      "main": "src/GoLNN/main.mo",
+      "type": "motoko"
+    },
+    "MainSystem": {
+      "main": "src/MainSystem/main.mo",
+      "type": "motoko",
+      "dependencies": [
+        "GoLNN"
+      ]
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
