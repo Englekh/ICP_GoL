@@ -106,7 +106,7 @@ actor MainSystem {
     Debug.print(debug_show ("New grid state: \n", grid));
   };
 
-  // Preparing to run X cycles
+  // Preparing to run X cycles negative value for cycles is inf
   public func runXCycles(cycles : Int, cycleTime : Nat) {
     // If there is already another timer deleting it
     Timer.cancelTimer(timerId);
