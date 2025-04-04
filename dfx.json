@@ -1,15 +1,25 @@
 {
   "canisters": {
-    "GoLNN": {
-      "main": "src/GoLNN/main.mo",
+    "gol_nn": {
+      "main": "src/gol_nn/main.mo",
       "type": "motoko"
     },
-    "MainSystem": {
-      "main": "src/MainSystem/main.mo",
-      "type": "motoko",
+    "gol_backend": {
       "dependencies": [
-        "GoLNN"
-      ]
+        "gol_nn"
+      ],
+      "main": "src/gol_backend/main.mo",
+      "type": "motoko"
+    },
+    "gol_frontend": {
+      "dependencies": [
+        "gol_backend"
+      ],
+      "source": [
+        "src/gol_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "gol_frontend"
     }
   },
   "defaults": {

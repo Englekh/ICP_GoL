@@ -5,13 +5,14 @@ import Timer "mo:base/Timer";
 import Random "mo:base/Random";
 import Iter "mo:base/Iter";
 import Bool "mo:base/Bool";
-import GoLNN "canister:GoLNN";
+
+import gol_nn "canister:gol_nn";
 
 
 /*
  * This is the container that initializes, stores  and triggers updates of the GoL boardstate.
  */ 
-actor MainSystem {
+actor gol_backend {
   // Variable for GoL state
   stable var grid: [[Bool]] = [];
   // Is GoL grid initialized
@@ -91,7 +92,7 @@ actor MainSystem {
   // Run one cycle
   private func runCycle() : async () {
     Debug.print(debug_show ("Cycle start"));
-    grid := await GoLNN.applyNN(grid);
+    grid := await gol_nn.applyNN(grid);
 
     // Checking if we need a new timer and running it
     if (timerCounter != 0) {
@@ -132,10 +133,55 @@ actor MainSystem {
 
   public func cancelTimer(): () {
     Timer.cancelTimer(timerId);
+    timerRunning := false;
   };
 
   public query func getState(): async [[Bool]] {
     grid
   };
+
+  public func changeCell(dimX : Nat, dimY : Nat) {
+    if (timerRunning) return;
+
+    let height = grid.size();
+    let width = grid[0].size();
+
+    var mutableGrid : [var [var Bool]] = Array.init<[var Bool]>(height, Array.init<Bool>(width, false));
+
+    for(i in Iter.range(0, height - 1)) {
+        for(j in Iter.range(0, width - 1)) {
+            if (i != dimY or j != dimX) {
+              mutableGrid[i][j] := grid[i][j];
+            } else {
+              mutableGrid[i][j] := not grid[i][j];
+            };
+        }; 
+    }; 
+
+
+    var ans : [var [Bool]] = Array.init<[Bool]>(height, []);
+    for(i in Iter.range(0, height - 1)) {
+        ans[i] := Array.freeze(mutableGrid[i]);
+    }; 
+
+    grid := Array.freeze(ans);
+  };
+
+  public query func getStateText(): async Text {
+    var ans_text = "";
+
+    let height = grid.size();
+    if (height == 0) return "\n";
+    let width = grid[0].size();
+      
+    for (i in Iter.range(0, height - 1)) {
+      for (j in Iter.range(0, width - 1)) {
+        ans_text #= if (grid[i][j]) "□" else "■";
+      };
+      ans_text #= "\n";
+    };
+
+    ans_text
+  }
 
 };

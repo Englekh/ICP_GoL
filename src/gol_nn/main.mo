@@ -3,7 +3,7 @@ import Array "mo:base/Array";
 import Iter "mo:base/Iter";
 //import Debug "mo:base/Debug";
 
-actor GoLNN {
+actor gol_nn {
 
     let Center : [Nat] = [1, 1];
 
