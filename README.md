@@ -29,6 +29,14 @@ cd examples/motoko/life
 dfx start --background
 ```
 
+### Step 1: Deploy the Canisters
+
+Run the following command:
+
+```bash
+dfx deploy
+```
+
 ### Step 3: Open the Frontend
 
 Open the frontend in your browser by clicking the link returned in the output of the previous command.
@@ -44,5 +52,5 @@ Open the frontend in your browser by clicking the link returned in the output of
 ## Authors:
 **Nikolay Larionov**: MIPT Blockchain Department, Moscow, Russia <br>
 **Grigorii Melnikov**: Gearbox Foundation, Budva, Montenegro, grmuller1996@gmail.com <br>
-**Yash Madhwal**:Skolkovo Institute of Science and Technology, Moscow, Russia
+**Yash Madhwal**:Skolkovo Institute of Science and Technology, Moscow, Russia <br>
 **Yury Yanovich**:Skolkovo Institute of Science and Technology, Moscow, Russia
