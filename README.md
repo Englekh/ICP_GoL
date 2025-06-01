@@ -29,7 +29,7 @@ cd examples/motoko/life
 dfx start --background
 ```
 
-### Step 1: Deploy the Canisters
+### Step 2: Deploy the Canisters
 
 Run the following command:
 
