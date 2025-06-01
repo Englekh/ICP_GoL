@@ -77,7 +77,7 @@ actor gol_backend {
         
       isInit := true;
 
-      Debug.print(debug_show ("Board inititalization finished", grid));
+      Debug.print(debug_show ("Board inititalization finished:\n", await getStateText()));
     } else {
       Debug.print(debug_show ("Timer is running cannot reinitialize new board", grid));
     }
@@ -91,7 +91,7 @@ actor gol_backend {
 
   // Run one cycle
   private func runCycle() : async () {
-    Debug.print(debug_show ("Cycle start"));
+    Debug.print(debug_show ("Cycle start:"));
     grid := await gol_nn.applyNN(grid);
 
     // Checking if we need a new timer and running it
@@ -104,11 +104,12 @@ actor gol_backend {
       timerRunning := false;
     };
 
-    Debug.print(debug_show ("New grid state: \n", grid));
+    Debug.print(debug_show ("New grid state: \n", await getStateText()));
   };
 
   // Preparing to run X cycles negative value for cycles is inf
   public func runXCycles(cycles : Int, cycleTime : Nat) {
+    Debug.print(debug_show ("Running", cycles, "cycles, time:", cycleTime));
     // If there is already another timer deleting it
     Timer.cancelTimer(timerId);
     
@@ -132,6 +133,8 @@ actor gol_backend {
   };
 
   public func cancelTimer(): () {
+    Debug.print(debug_show ("Canceling execution"));
+    
     Timer.cancelTimer(timerId);
     timerRunning := false;
   };
@@ -141,12 +144,17 @@ actor gol_backend {
   };
 
   public func changeCell(dimX : Nat, dimY : Nat) {
+    Debug.print(debug_show ("Updating grid"));
+
     if (timerRunning) return;
 
     let height = grid.size();
     let width = grid[0].size();
 
     var mutableGrid : [var [var Bool]] = Array.init<[var Bool]>(height, Array.init<Bool>(width, false));
+    for (i in Iter.range(0, height - 1)) {
+        mutableGrid[i] := Array.init<Bool>(width, false);
+    };
 
     for(i in Iter.range(0, height - 1)) {
         for(j in Iter.range(0, width - 1)) {
@@ -158,7 +166,6 @@ actor gol_backend {
         }; 
     }; 
 
-
     var ans : [var [Bool]] = Array.init<[Bool]>(height, []);
     for(i in Iter.range(0, height - 1)) {
         ans[i] := Array.freeze(mutableGrid[i]);
@@ -168,6 +175,8 @@ actor gol_backend {
   };
 
   public query func getStateText(): async Text {
+    if (not isInit) return "Grid not Initialized";
+    
     var ans_text = "";
 
     let height = grid.size();
@@ -182,6 +191,10 @@ actor gol_backend {
     };
 
     ans_text
-  }
+  };
+
+  public query func ping() : async Text {
+    "Pong!"
+  };
 
 };

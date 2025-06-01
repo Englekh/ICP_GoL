@@ -1,21 +1,12 @@
 {
-  "name": "gol_dapp",
-  "description": "Internet Computer starter application",
-  "keywords": [
-    "Internet Computer",
-    "Motoko",
-    "JavaScript",
-    "Canister"
-  ],
+  "name": "hello_world",
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "prebuild": "npm run prebuild --workspaces --if-present",
-    "pretest": "npm run prebuild --workspaces --if-present",
-    "start": "npm start --workspaces --if-present",
-    "test": "npm test --workspaces --if-present"
+    "dev": "npm run dev --workspaces --if-present"
   },
   "type": "module",
   "workspaces": [
-    "src/gol_frontend"
+    "frontend"
   ]
 }

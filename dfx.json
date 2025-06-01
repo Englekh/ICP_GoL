@@ -11,23 +11,19 @@
       "main": "src/gol_backend/main.mo",
       "type": "motoko"
     },
-    "gol_frontend": {
-      "dependencies": [
-        "gol_backend"
-      ],
-      "source": [
-        "src/gol_frontend/dist"
-      ],
-      "type": "assets",
-      "workspace": "gol_frontend"
-    }
-  },
-  "defaults": {
-    "build": {
-      "args": "",
-      "packtool": ""
+    "frontend": {
+      "dependencies": ["gol_backend"],
+      "frontend": {
+        "entrypoint": "frontend/index.html"
+      },
+      "source": ["frontend/dist"],
+      "type": "assets"
     }
   },
   "output_env_file": ".env",
-  "version": 1
+  "defaults": {
+    "build": {
+      "packtool": "mops sources"
+    }
+  }
 }
